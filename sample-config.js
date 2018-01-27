@@ -166,6 +166,12 @@ config.custom = {
   my_custom_setting: 10,
 }
 
+config.sniper = {
+  limit_down: -5,
+  limit_up: 5,
+  spike: -10
+}
+
 config['talib-macd'] = {
   parameters: {
     optInFastPeriod: 10,

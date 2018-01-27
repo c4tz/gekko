@@ -10,7 +10,7 @@ var strat = {};
 // Prepare everything our strat needs
 strat.init = function() {
   this.requiredHistory = 1;
-  this.buyPrice = 0;
+  this.lastPrice = 0;
   this.bought = false;
 }
 
@@ -19,15 +19,17 @@ strat.update = function(candle) {
   if (!this.bought) {
     if (candle.low < addPercent(candle.open, this.settings.spike)) {
       this.advice('long')
-      this.buyPrice = candle.close
+      this.lastPrice = candle.close
       this.bought = true
     }
   }
   else if (this.bought) {
-    if (candle.close > addPercent(this.buyPrice, this.settings.limit_up)
-    || candle.close < addPercent(this.buyPrice, this.settings.limit_down)) {
+    if (candle.close < addPercent(this.lastPrice, this.settings.limit)) {
       this.advice('short')
       this.bought = false
+    }
+    else if (candle.close > this.lastPrice) {
+      this.lastPrice = candle.close
     }
   }
   return;

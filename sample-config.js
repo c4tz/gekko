@@ -167,8 +167,7 @@ config.custom = {
 }
 
 config.sniper = {
-  limit_down: -5,
-  limit_up: 5,
+  limit: -5,
   spike: -10
 }
 

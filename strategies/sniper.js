@@ -1,5 +1,7 @@
 var log = require('../core/log.js');
 
+var SMA = require('./indicators/SMA');
+
 function addPercent(value, percent) {
     return value*((100+percent)/100)
 }
@@ -11,16 +13,20 @@ var strat = {};
 strat.init = function() {
   this.requiredHistory = 1;
   this.lastPrice = 0;
+  this.sma = new SMA(30);
   this.bought = false;
 }
 
 // What happens on every new candle?
 strat.update = function(candle) {
+  this.sma.update(candle.close);
   if (!this.bought) {
     if (candle.low < addPercent(candle.open, this.settings.spike)) {
-      this.advice('long')
-      this.lastPrice = candle.close
-      this.bought = true
+      if (this.sma.result > candle.close) {
+          this.advice('long')
+          this.lastPrice = candle.close
+          this.bought = true
+      }
     }
   }
   else if (this.bought) {

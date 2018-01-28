@@ -14,18 +14,22 @@ strat.init = function() {
   this.requiredHistory = 1;
   this.lastPrice = 0;
   this.sma = new SMA(30);
+  this.sma5000 = new SMA(5000);
   this.bought = false;
 }
 
 // What happens on every new candle?
 strat.update = function(candle) {
   this.sma.update(candle.close);
+  this.sma5000.update(candle.close);
   if (!this.bought) {
     if (candle.low < addPercent(candle.open, this.settings.spike)) {
       if (this.sma.result > candle.close) {
+      if (this.sma5000.result > candle.close) {
           this.advice('long')
           this.lastPrice = candle.close
           this.bought = true
+      }
       }
     }
   }

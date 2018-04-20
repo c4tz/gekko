@@ -11,6 +11,9 @@ datasets = r = requests.post(
             data = json.dumps({})
         ).json()['datasets']
 
+# use only datasets from binance
+datasets = list(filter(lambda x: x['exchange'] == 'binance', datasets))
+
 for dataset in datasets:
     r = requests.post(
         api + '/backtest',
@@ -66,6 +69,12 @@ for dataset in datasets:
             }
         })
     )
-    print(r.json()['report'])
+    report = r.json()['report']
+    print(
+        'Pair:', report['asset'] + '/' + report['currency'],
+        'Market:', report['market'],
+        'Profit:', report['profit'],
+        'Trades:', report['trades']
+    )
 
     

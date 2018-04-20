@@ -35,7 +35,12 @@ strat.update = function(candle) {
     rsi60.update(getCandle(this.candles.slice(-60)))
     rsi240.update(getCandle(this.candles))
 
-    oversolds = [rsi5 < 20, rsi15 < 25, rsi60 < 25, rsi240 < 25]
+    oversolds = [
+      rsi5.result < 20,
+      rsi15.result < 25,
+      rsi60.result < 25,
+      rsi240.result < 25
+    ]
     sum = 0
     oversolds.map( entry => {
       if (entry)

@@ -49,3 +49,9 @@ config-*.js
 private-*.js
 private-*.toml
 SECRET-api-keys.json
+
+# python virtual env
+.pyenv
+
+# direnv
+.envrc

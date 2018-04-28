@@ -24,12 +24,14 @@ def get_now_str():
     return datetime.datetime.now().strftime('%Y-%m-%d %H:%M')
 
 def wait_for_imports(imports: list):
-    running = requests.get(HOST + '/imports').json()
-    for item in running:
-        if item['id'] in imports and not item.get('done', False):
-            sleep(1)
-            wait_for_imports(imports)
-            return
+    done = 0
+    while done < BATCH_SIZE:
+        done = 0
+        running = requests.get(HOST + '/imports').json()
+        for item in running:
+            if item['id'] in imports and item.get('done', False):
+                done += 1
+        sleep(1)
 
 imports = []
 count = 0
